@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(dbom
     src/main.cpp
     src/document.cpp
+    src/database.cpp
 )
 
 # Incluir diretório de headers locais

@@ -7,6 +7,8 @@
 *.dll
 *.exe
 
+db.json
+
 # Build directory (CMake)
 build/
 cmake-build-*/
