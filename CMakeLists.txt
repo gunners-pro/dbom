@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Adiciona os arquivos do seu projeto
 add_executable(dbom
     src/main.cpp
+    src/document.cpp
 )
 
 # Incluir diretório de headers locais
