@@ -1,0 +1,36 @@
+# Compilados C/C++
+*.out
+*.o
+*.obj
+*.so
+*.a
+*.dll
+*.exe
+
+# Build directory (CMake)
+build/
+cmake-build-*/
+
+# CMake cache
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# VSCode settings
+.vscode/
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp
+*.bak
+*~
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Diretórios de dados
+data/*.mydoc
+data/*.json
