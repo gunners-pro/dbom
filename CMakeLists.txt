@@ -8,13 +8,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Adiciona os arquivos do seu projeto
 add_executable(dbom
     src/main.cpp
+    src/cli/repl.cpp
+
     src/document.cpp
     src/database.cpp
     src/collection.cpp
 )
 
 # Incluir diretório de headers locais
-target_include_directories(dbom PRIVATE src)
+target_include_directories(dbom PRIVATE
+    src
+    src/cli
+)
 
 # Baixa e inclui a biblioteca nlohmann/json via FetchContent
 include(FetchContent)
