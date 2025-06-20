@@ -3,70 +3,41 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
 bool Database::use_collection(const std::string& name)
 {
-    if (name.empty())
-        return false;
-
-    current_collection = "data/" + name + ".json";
-    load();
+    current_collection = std::make_shared<Collection>(name);
     return true;
 }
 
-void Database::insert(Document& doc)
+std::vector<std::string> Database::list_collections() const
 {
-    std::string id = generate_uuidV4();
-    doc.id = id;
-    storage[id] = doc;
-}
-
-Document* Database::get_by_id(const std::string& id)
-{
-    if (storage.count(id))
-        return &storage[id];
-    return nullptr;
-}
-
-void Database::remove(const std::string& id)
-{
-    storage.erase(id);
-}
-
-void Database::list() const
-{
-    for (const auto& [id, doc] : storage)
+    std::vector<std::string> collections;
+    for (const auto& entry : std::filesystem::directory_iterator("data"))
     {
-        std::cout << id << ": " << doc.to_json() << std::endl;
+        if (entry.is_regular_file())
+        {
+            std::string filename = entry.path().filename().string();
+            if (filename.ends_with(".json"))
+            {
+                collections.push_back(filename.substr(0, filename.size() - 5));
+            }
+        }
     }
+    return collections;
 }
 
-void Database::save()
+bool Database::delete_collection(const std::string& name)
 {
-    json j_array = json::array();
-    for (const auto& [_, doc] : storage)
-    {
-        j_array.push_back(json::parse(doc.to_json()));
-    }
-    std::ofstream file(current_collection);
-    file << j_array.dump(4);
+    std::string path = "db/" + name + ".json";
+    return std::filesystem::remove(path);
 }
 
-void Database::load()
+std::shared_ptr<Collection> Database::current()
 {
-    storage.clear();
-    std::ifstream file(current_collection);
-    if (!file)
-        return;
-
-    json j_array;
-    file >> j_array;
-    for (const auto& j : j_array)
-    {
-        Document doc = Document::from_json(j.dump());
-        storage[doc.id] = doc;
-    }
+    return current_collection;
 }

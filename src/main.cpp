@@ -8,14 +8,15 @@ int main(int argc, char* argv[])
 {
     create_data_directory();
     Database db;
-    db.load();
+    db.use_collection("default");
 
     std::string line;
     std::cout << "DBom NoSQL interativo. Digite 'help' para ajuda.\n";
 
     while (true)
     {
-        std::cout << "> ";
+        std::string name_collection = db.current()->get_name();
+        std::cout << "[dbom:" << name_collection << "]>";
         if (!std::getline(std::cin, line))
             break;
 
@@ -45,8 +46,7 @@ int main(int argc, char* argv[])
             try
             {
                 Document doc = Document::from_json(json_str);
-                db.insert(doc);
-                db.save();
+                db.current()->insert(doc);
                 std::cout << "Documento inserido.\n";
             }
             catch (...)
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
         {
             std::string id;
             iss >> id;
-            Document* doc = db.get_by_id(id);
+            Document* doc = db.current()->get(id);
             if (doc)
                 std::cout << doc->to_json() << "\n";
             else
@@ -66,15 +66,20 @@ int main(int argc, char* argv[])
         }
         else if (cmd == "delete")
         {
-            std::string id;
-            iss >> id;
-            db.remove(id);
-            db.save();
-            std::cout << "Documento removido.\n";
-        }
-        else if (cmd == "list")
-        {
-            db.list();
+            try
+            {
+                std::string id;
+                iss >> id;
+                int result = db.current()->remove(id);
+                if (result == 1)
+                    std::cout << "Documento removido.\n";
+                else
+                    std::cout << "Documento nao encontrado.\n";
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << e.what() << std::endl;
+            }
         }
         else if (cmd == "use")
         {
@@ -88,6 +93,20 @@ int main(int argc, char* argv[])
             {
                 std::cout << "Erro ao trocar de coleção." << std::endl;
             }
+        }
+        else if (cmd == "list-collections")
+        {
+            auto cols = db.list_collections();
+            for (const auto& name : cols)
+            {
+                std::cout << name << "\n";
+            }
+        }
+        else if (cmd == "delete-collection")
+        {
+            std::string name;
+            if (db.delete_collection(name))
+                std::cout << "Coleção removida.\n";
         }
         else
         {
