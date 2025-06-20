@@ -33,8 +33,16 @@ std::vector<std::string> Database::list_collections() const
 
 bool Database::delete_collection(const std::string& name)
 {
-    std::string path = "db/" + name + ".json";
-    return std::filesystem::remove(path);
+    try
+    {
+        std::string path = "data/" + name + ".json";
+        return std::filesystem::remove(path);
+    }
+    catch (const std::filesystem::filesystem_error& e)
+    {
+        std::cerr << "Erro ao deletar colecao: " << name << e.what() << std::endl;
+        return false;
+    }
 }
 
 std::shared_ptr<Collection> Database::current()

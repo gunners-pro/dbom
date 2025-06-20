@@ -1,6 +1,5 @@
 #include "database.hpp"
 #include "utils/create_data_directory.hpp"
-#include <filesystem>
 #include <iostream>
 #include <sstream>
 
@@ -105,8 +104,11 @@ int main(int argc, char* argv[])
         else if (cmd == "delete-collection")
         {
             std::string name;
+            iss >> name;
             if (db.delete_collection(name))
-                std::cout << "Coleção removida.\n";
+                std::cout << "Colecao removida." << std::endl;
+            else
+                std::cout << "Colecao nao existe." << std::endl;
         }
         else
         {
