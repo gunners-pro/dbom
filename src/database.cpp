@@ -1,10 +1,21 @@
 #include "database.hpp"
 #include "utils/uuid.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
+
+bool Database::use_collection(const std::string& name)
+{
+    if (name.empty())
+        return false;
+
+    current_collection = "data/" + name + ".json";
+    load();
+    return true;
+}
 
 void Database::insert(Document& doc)
 {
@@ -33,20 +44,21 @@ void Database::list() const
     }
 }
 
-void Database::save_to_file(const std::string& path) const
+void Database::save()
 {
     json j_array = json::array();
     for (const auto& [_, doc] : storage)
     {
         j_array.push_back(json::parse(doc.to_json()));
     }
-    std::ofstream file(path);
+    std::ofstream file(current_collection);
     file << j_array.dump(4);
 }
 
-void Database::load_from_file(const std::string& path)
+void Database::load()
 {
-    std::ifstream file(path);
+    storage.clear();
+    std::ifstream file(current_collection);
     if (!file)
         return;
 

@@ -1,12 +1,14 @@
 #include "database.hpp"
+#include "utils/create_data_directory.hpp"
+#include <filesystem>
 #include <iostream>
 #include <sstream>
 
 int main(int argc, char* argv[])
 {
-    std::string filename_path = "data/db.json";
+    create_data_directory();
     Database db;
-    db.load_from_file(filename_path);
+    db.load();
 
     std::string line;
     std::cout << "DBom NoSQL interativo. Digite 'help' para ajuda.\n";
@@ -29,11 +31,12 @@ int main(int argc, char* argv[])
         else if (cmd == "help")
         {
             std::cout << "Comandos disponiveis:\n"
-                      << "  insert {json}   - Insere um documento\n"
-                      << "  get <id>        - Exibe um documento\n"
-                      << "  delete <id>     - Remove um documento\n"
-                      << "  list            - Lista todos os documentos\n"
-                      << "  exit            - Encerra o programa\n";
+                      << "  insert {json}       - Insere um documento\n"
+                      << "  use {collection}    - Alterna uma colecao\n"
+                      << "  get <id>            - Exibe um documento\n"
+                      << "  delete <id>         - Remove um documento\n"
+                      << "  list                - Lista todos os documentos\n"
+                      << "  exit                - Encerra o programa\n";
         }
         else if (cmd == "insert")
         {
@@ -43,7 +46,7 @@ int main(int argc, char* argv[])
             {
                 Document doc = Document::from_json(json_str);
                 db.insert(doc);
-                db.save_to_file(filename_path);
+                db.save();
                 std::cout << "Documento inserido.\n";
             }
             catch (...)
@@ -66,12 +69,25 @@ int main(int argc, char* argv[])
             std::string id;
             iss >> id;
             db.remove(id);
-            db.save_to_file(filename_path);
+            db.save();
             std::cout << "Documento removido.\n";
         }
         else if (cmd == "list")
         {
             db.list();
+        }
+        else if (cmd == "use")
+        {
+            std::string name;
+            iss >> name;
+            if (db.use_collection(name))
+            {
+                std::cout << "Usando coleção: " << name << std::endl;
+            }
+            else
+            {
+                std::cout << "Erro ao trocar de coleção." << std::endl;
+            }
         }
         else
         {
