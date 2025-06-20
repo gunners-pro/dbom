@@ -42,11 +42,6 @@ int main(int argc, char* argv[])
             try
             {
                 Document doc = Document::from_json(json_str);
-                if (doc.id.empty())
-                {
-                    std::cerr << "Documento precisa de campo 'id'.\n";
-                    continue;
-                }
                 db.insert(doc);
                 db.save_to_file(filename_path);
                 std::cout << "Documento inserido.\n";

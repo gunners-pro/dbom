@@ -1,13 +1,16 @@
 #include "database.hpp"
+#include "utils/uuid.hpp"
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
-void Database::insert(const Document& doc)
+void Database::insert(Document& doc)
 {
-    storage[doc.id] = doc;
+    std::string id = generate_uuidV4();
+    doc.id = id;
+    storage[id] = doc;
 }
 
 Document* Database::get_by_id(const std::string& id)

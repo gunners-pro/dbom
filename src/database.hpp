@@ -4,7 +4,7 @@
 class Database
 {
   public:
-    void insert(const Document& doc);
+    void insert(Document& doc);
     Document* get_by_id(const std::string& id);
     void remove(const std::string& id);
     void list() const;
