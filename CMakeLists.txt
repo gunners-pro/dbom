@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(dbom VERSION 0.1 LANGUAGES CXX)
+project(dbom_core VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Adiciona os arquivos do seu projeto
-add_executable(dbom
+add_executable(dbom_core
     src/main.cpp
     src/cli/repl.cpp
 
@@ -16,7 +16,7 @@ add_executable(dbom
 )
 
 # Incluir diretório de headers locais
-target_include_directories(dbom PRIVATE
+target_include_directories(dbom_core PRIVATE
     src
     src/cli
 )
@@ -33,4 +33,4 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json)
 
 # Linka a biblioteca ao seu executável
-target_link_libraries(dbom PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(dbom_core PRIVATE nlohmann_json::nlohmann_json)
