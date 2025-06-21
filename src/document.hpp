@@ -14,4 +14,6 @@ class Document
 
     std::string to_json() const;
     static Document from_json(const std::string& json);
+    void serialize(std::ostream& out) const;
+    static Document deserialize(std::istream& in);
 };

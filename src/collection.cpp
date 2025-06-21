@@ -2,13 +2,10 @@
 #include "utils/uuid.hpp"
 #include <fstream>
 #include <iostream>
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
 
 Collection::Collection(const std::string& name) : name(name)
 {
-    file_path = "data/" + name + ".json";
+    file_path = "data/" + name;
     load();
 }
 
@@ -43,27 +40,23 @@ void Collection::list() const
 
 void Collection::save() const
 {
-    json j_array = json::array();
+    std::ofstream file(file_path, std::ios::binary);
     for (const auto& [_, doc] : documents)
     {
-        j_array.push_back(json::parse(doc.to_json()));
+        doc.serialize(file);
     }
-    std::ofstream file(file_path);
-    file << j_array.dump(4);
 }
 
 void Collection::load()
 {
     documents.clear();
-    std::ifstream file(file_path);
+    std::ifstream file(file_path, std::ios::binary);
     if (!file)
         return;
 
-    json j_array;
-    file >> j_array;
-    for (const auto& j : j_array)
+    while (file.peek() != EOF)
     {
-        Document doc = Document::from_json(j.dump());
+        Document doc = Document::deserialize(file);
         documents[doc.id] = doc;
     }
 }
