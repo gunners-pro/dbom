@@ -17,7 +17,6 @@ void Collection::insert(Document& doc)
     std::string id = generate_uuidV4();
     doc.id = id;
     documents[doc.id] = doc;
-    save();
 }
 
 Document* Collection::get(const std::string& id)
@@ -31,7 +30,6 @@ Document* Collection::get(const std::string& id)
 int Collection::remove(const std::string& id)
 {
     int result = documents.erase(id);
-    save();
     return result;
 }
 

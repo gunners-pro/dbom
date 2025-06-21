@@ -45,6 +45,7 @@ void run_repl(Database& db)
             {
                 Document doc = Document::from_json(json_str);
                 db.current()->insert(doc);
+                db.current()->save();
                 std::cout << "Documento inserido.\n";
             }
             catch (...)
@@ -69,6 +70,7 @@ void run_repl(Database& db)
                 std::string id;
                 iss >> id;
                 int result = db.current()->remove(id);
+                db.current()->save();
                 if (result == 1)
                     std::cout << "Documento removido.\n";
                 else

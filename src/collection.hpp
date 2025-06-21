@@ -14,6 +14,7 @@ class Collection
     int remove(const std::string& id);
     void list() const;
     std::string get_name() const;
+    void save() const;
 
   private:
     std::string name;
@@ -21,5 +22,4 @@ class Collection
     std::unordered_map<std::string, Document> documents;
 
     void load();
-    void save() const;
 };
