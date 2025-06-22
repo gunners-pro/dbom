@@ -30,12 +30,14 @@ int Collection::remove(const std::string& id)
     return result;
 }
 
-void Collection::list() const
+std::vector<Document*> Collection::list() const
 {
+    std::vector<Document*> docs;
     for (const auto& [id, doc] : documents)
     {
-        std::cout << doc.to_json() << "\n";
+        docs.push_back(const_cast<Document*>(&doc));
     }
+    return docs;
 }
 
 void Collection::save() const

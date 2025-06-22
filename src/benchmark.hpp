@@ -23,12 +23,12 @@ inline void benchmark(Database& db, int count)
 
         // Parsing
         auto t1 = high_resolution_clock::now();
-        Document doc = Document::from_json(json_input);
-        doc.id = generate_uuidV4();
+        // Document doc = Document::from_json(json_input);
+        // doc.id = generate_uuidV4();
         auto t2 = high_resolution_clock::now();
 
         // Inserção em memória
-        db.current()->insert(doc);
+        // db.current()->insert(doc);
         auto t3 = high_resolution_clock::now();
 
         total_parse += duration_cast<milliseconds>(t2 - t1);

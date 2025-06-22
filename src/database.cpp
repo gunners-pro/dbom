@@ -4,9 +4,6 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include <nlohmann/json.hpp>
-
-using json = nlohmann::json;
 
 bool Database::use_collection(const std::string& name)
 {

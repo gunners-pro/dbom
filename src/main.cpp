@@ -1,7 +1,7 @@
 #include "benchmark.hpp"
 #include "database.hpp"
 #include "utils/create_data_directory.hpp"
-#include <repl.hpp>
+#include <cli/repl.hpp>
 
 int main(int argc, char* argv[])
 {

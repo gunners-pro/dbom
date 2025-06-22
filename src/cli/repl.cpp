@@ -40,10 +40,11 @@ void run_repl(Database& db)
         else if (cmd == "insert")
         {
             std::string json_str;
-            std::getline(iss, json_str); // pega o restante da linha
+            std::getline(iss, json_str);
             try
             {
-                Document doc = Document::from_json(json_str);
+                std::istringstream json_stream(json_str);
+                Document doc = Document::deserialize(json_stream);
                 db.current()->insert(doc);
                 db.current()->save();
                 std::cout << "Documento inserido.\n";
@@ -59,7 +60,7 @@ void run_repl(Database& db)
             iss >> id;
             Document* doc = db.current()->get(id);
             if (doc)
-                std::cout << doc->to_json() << "\n";
+                std::cout << doc << "\n";
             else
                 std::cout << "Documento não encontrado.\n";
         }
@@ -85,7 +86,11 @@ void run_repl(Database& db)
         {
             try
             {
-                db.current()->list();
+                const auto docs = db.current()->list();
+                for (const auto& doc : docs)
+                {
+                    std::cout << doc;
+                }
             }
             catch (const std::exception& e)
             {

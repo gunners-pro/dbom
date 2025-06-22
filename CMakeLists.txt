@@ -6,31 +6,23 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Adiciona os arquivos do seu projeto
-add_executable(dbom_core
-    src/main.cpp
-    src/cli/repl.cpp
-
+add_library(dbom_core STATIC
     src/document.cpp
     src/database.cpp
     src/collection.cpp
+    src/cli/repl.cpp
 )
+
+# Executável
+add_executable(dbom_cli    
+    src/main.cpp
+)
+
+# Link com a lib
+target_link_libraries(dbom_cli PRIVATE dbom_core)
 
 # Incluir diretório de headers locais
-target_include_directories(dbom_core PRIVATE
-    src
-    src/cli
+target_include_directories(dbom_core PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-# Baixa e inclui a biblioteca nlohmann/json via FetchContent
-include(FetchContent)
-
-FetchContent_Declare(
-  json
-  GIT_REPOSITORY https://github.com/nlohmann/json.git
-  GIT_TAG v3.12.0  # Ou use a versão mais recente
-)
-
-FetchContent_MakeAvailable(json)
-
-# Linka a biblioteca ao seu executável
-target_link_libraries(dbom_core PRIVATE nlohmann_json::nlohmann_json)
