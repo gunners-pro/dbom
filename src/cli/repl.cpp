@@ -58,11 +58,15 @@ void run_repl(Database& db)
         {
             std::string id;
             iss >> id;
-            Document* doc = db.current()->get(id);
+            if (id.empty())
+            {
+                std::cout << "Digite um id valido." << std::endl;
+            }
+            const Document* doc = db.current()->get(id);
             if (doc)
                 std::cout << doc << "\n";
             else
-                std::cout << "Documento não encontrado.\n";
+                std::cout << "Documento nao encontrado." << std::endl;
         }
         else if (cmd == "delete")
         {

@@ -16,7 +16,7 @@ void Collection::insert(Document& doc)
     documents[doc.id] = doc;
 }
 
-Document* Collection::get(const std::string& id)
+const Document* Collection::get(const std::string& id)
 {
     auto it = documents.find(id);
     if (it != documents.end())
