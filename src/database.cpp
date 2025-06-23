@@ -7,7 +7,21 @@
 
 bool Database::use_collection(const std::string& name)
 {
-    current_collection = std::make_shared<Collection>(name);
+    current_collection_name = name;
+
+    if (collections.count(name) == 0)
+    {
+        auto col = std::make_shared<Collection>(name);
+        if (std::filesystem::exists("data/" + name + ".bin"))
+        {
+            col->load();
+        }
+        else
+        {
+            col->save();
+        }
+        collections[name] = col;
+    }
     return true;
 }
 
@@ -44,5 +58,8 @@ bool Database::delete_collection(const std::string& name)
 
 std::shared_ptr<Collection> Database::current()
 {
-    return current_collection;
+    if (current_collection_name.empty())
+        return nullptr;
+
+    return collections[current_collection_name];
 }

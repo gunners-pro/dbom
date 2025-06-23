@@ -15,11 +15,10 @@ class Collection
     std::vector<const Document*> list() const;
     std::string get_name() const;
     void save() const;
+    void load();
 
   private:
     std::string name;
     std::string file_path;
     std::unordered_map<std::string, Document> documents;
-
-    void load();
 };

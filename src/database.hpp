@@ -12,6 +12,6 @@ class Database
     std::shared_ptr<Collection> current();
 
   private:
-    std::unordered_map<std::string, Document> storage;
-    std::shared_ptr<Collection> current_collection;
+    std::unordered_map<std::string, std::shared_ptr<Collection>> collections;
+    std::string current_collection_name;
 };

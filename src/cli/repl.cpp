@@ -43,8 +43,6 @@ void run_repl(Database& db)
             json_str = line.substr(line.find("insert") + 6);
             try
             {
-                std::cout << "[DEBUG] JSON recebido: " << json_str << "\n";
-
                 Document doc = Document::from_json(json_str);
                 db.current()->insert(doc);
                 db.current()->save();

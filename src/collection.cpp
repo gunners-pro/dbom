@@ -5,7 +5,7 @@
 
 Collection::Collection(const std::string& name) : name(name)
 {
-    file_path = "data/" + name;
+    file_path = "data/" + name + ".bin";
     load();
 }
 
