@@ -93,7 +93,7 @@ void run_repl(Database& db)
                 const auto docs = db.current()->list();
                 for (const auto& doc : docs)
                 {
-                    std::cout << doc;
+                    std::cout << doc->to_json() << std::endl;
                 }
             }
             catch (const std::exception& e)

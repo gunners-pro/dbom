@@ -158,3 +158,16 @@ Document Document::from_json(const std::string& json_str)
     }
     return doc;
 }
+
+std::string Document::to_json() const
+{
+    nlohmann::json j;
+    j["id"] = id;
+
+    for (const auto& [key, value] : fields)
+    {
+        std::visit([&j, &key](const auto& v) { j[key] = v; }, value);
+    }
+
+    return j.dump();
+}
