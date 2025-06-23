@@ -12,7 +12,7 @@ class Collection
     void insert(Document& doc);
     Document* get(const std::string& id);
     int remove(const std::string& id);
-    std::vector<Document*> list() const;
+    std::vector<const Document*> list() const;
     std::string get_name() const;
     void save() const;
 

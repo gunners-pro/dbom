@@ -30,12 +30,12 @@ int Collection::remove(const std::string& id)
     return result;
 }
 
-std::vector<Document*> Collection::list() const
+std::vector<const Document*> Collection::list() const
 {
-    std::vector<Document*> docs;
+    std::vector<const Document*> docs;
     for (const auto& [id, doc] : documents)
     {
-        docs.push_back(const_cast<Document*>(&doc));
+        docs.push_back(&doc);
     }
     return docs;
 }
