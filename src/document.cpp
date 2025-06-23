@@ -1,4 +1,5 @@
 #include "document.hpp"
+#include "utils/uuid.hpp"
 #include <cstdint>
 #include <iostream>
 
@@ -125,5 +126,35 @@ Document Document::deserialize(std::istream& in)
         }
     }
 
+    return doc;
+}
+
+Document Document::from_json(const std::string& json_str)
+{
+    Document doc;
+    json j = json::parse(json_str);
+    doc.id = generate_uuidV4();
+
+    for (auto& [key, value] : j.items())
+    {
+        if (key == "id")
+            continue; // id já setado acima
+        if (value.is_string())
+            doc.fields[key] = value.get<std::string>();
+        else if (value.is_number_float())
+            doc.fields[key] = value.get<double>();
+        else if (value.is_number_integer())
+            doc.fields[key] = value.get<int>();
+        else if (value.is_boolean())
+            doc.fields[key] = value.get<bool>();
+        else if (value.is_array())
+        {
+            std::vector<std::string> vec;
+            for (const auto& item : value)
+                vec.push_back(item.get<std::string>());
+            doc.fields[key] = vec;
+        }
+        // validar mais tipos conforme necessário
+    }
     return doc;
 }

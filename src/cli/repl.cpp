@@ -40,18 +40,20 @@ void run_repl(Database& db)
         else if (cmd == "insert")
         {
             std::string json_str;
-            std::getline(iss, json_str);
+            json_str = line.substr(line.find("insert") + 6);
             try
             {
-                std::istringstream json_stream(json_str);
-                Document doc = Document::deserialize(json_stream);
+                std::cout << "[DEBUG] JSON recebido: " << json_str << "\n";
+
+                Document doc = Document::from_json(json_str);
                 db.current()->insert(doc);
                 db.current()->save();
-                std::cout << "Documento inserido.\n";
+                std::cout << "Documento inserido." << std::endl;
             }
-            catch (...)
+            catch (std::exception& e)
             {
-                std::cerr << "Erro ao interpretar JSON.\n";
+                std::cerr << "Erro ao interpretar JSON." << std::endl;
+                std::cerr << "Error: " << e.what() << std::endl;
             }
         }
         else if (cmd == "get")

@@ -26,3 +26,15 @@ target_include_directories(dbom_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+include(FetchContent)
+
+FetchContent_Declare(
+  json
+  URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+)
+
+FetchContent_MakeAvailable(json)
+
+# Link com a lib
+target_link_libraries(dbom_core PUBLIC nlohmann_json::nlohmann_json
+)
