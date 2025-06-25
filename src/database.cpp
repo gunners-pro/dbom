@@ -44,14 +44,21 @@ std::vector<std::string> Database::list_collections() const
 
 bool Database::delete_collection(const std::string& name)
 {
+    std::string path = "data/" + name + ".bin";
+
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "[ERRO] A colecao '" << name << "' nao existe." << std::endl;
+        return false;
+    }
+
     try
     {
-        std::string path = "data/" + name + ".json";
         return std::filesystem::remove(path);
     }
     catch (const std::filesystem::filesystem_error& e)
     {
-        std::cerr << "Erro ao deletar colecao: " << name << e.what() << std::endl;
+        std::cerr << "[ERRO] Falha ao deletar colecao: '" << name << "': " << e.what() << std::endl;
         return false;
     }
 }

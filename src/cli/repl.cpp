@@ -129,7 +129,7 @@ void run_repl(Database& db)
             if (db.delete_collection(name))
                 std::cout << "Colecao removida." << std::endl;
             else
-                std::cout << "Colecao nao existe." << std::endl;
+                std::cout << "Nao foi possivel remover a colecao." << std::endl;
         }
         else
         {
