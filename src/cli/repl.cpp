@@ -60,13 +60,16 @@ void run_repl(Database& db)
             iss >> id;
             if (id.empty())
             {
-                std::cout << "Digite um id valido." << std::endl;
+                std::cerr << "Digite um id valido." << std::endl;
             }
-            const Document* doc = db.current()->get(id);
-            if (doc)
-                std::cout << doc << "\n";
             else
-                std::cout << "Documento nao encontrado." << std::endl;
+            {
+                const Document* doc = db.current()->get(id);
+                if (doc)
+                    std::cout << doc->to_json() << std::endl;
+                else
+                    std::cerr << "Documento nao encontrado." << std::endl;
+            }
         }
         else if (cmd == "delete")
         {
