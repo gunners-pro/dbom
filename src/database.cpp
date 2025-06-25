@@ -27,19 +27,19 @@ bool Database::use_collection(const std::string& name)
 
 std::vector<std::string> Database::list_collections() const
 {
-    std::vector<std::string> collections;
+    std::vector<std::string> names;
     for (const auto& entry : std::filesystem::directory_iterator("data"))
     {
         if (entry.is_regular_file())
         {
             std::string filename = entry.path().filename().string();
-            if (filename.ends_with(".json"))
+            if (filename.ends_with(".bin"))
             {
-                collections.push_back(filename.substr(0, filename.size() - 5));
+                names.push_back(filename.substr(0, filename.size() - 4));
             }
         }
     }
-    return collections;
+    return names;
 }
 
 bool Database::delete_collection(const std::string& name)

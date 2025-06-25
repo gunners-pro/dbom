@@ -107,11 +107,11 @@ void run_repl(Database& db)
             iss >> name;
             if (db.use_collection(name))
             {
-                std::cout << "Usando coleção: " << name << std::endl;
+                std::cout << "Usando colecao: " << name << std::endl;
             }
             else
             {
-                std::cout << "Erro ao trocar de coleção." << std::endl;
+                std::cout << "Erro ao trocar de colecao." << std::endl;
             }
         }
         else if (cmd == "list-collections")
